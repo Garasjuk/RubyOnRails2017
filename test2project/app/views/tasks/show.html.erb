@@ -1,0 +1,32 @@
+<p>
+  <strong>Title:</strong>
+  <%= @task.title %>
+</p>
+ 
+<p>
+  <strong>Description:</strong>
+  <%= @task.description %>
+</p>
+
+	<h2>Comments</h2>
+	<% @task.comments.each do |comment| %>
+		<p>
+			<strong>Comment:</strong>
+			<%= comment.body %>
+		</p>	
+		  
+	<% end %>
+	<h2>Add a comment:</h2>
+		<%= form_for([@task, @task.comments.build]) do |f| %>
+		  <p>
+			<%= f.label :comment %><br>
+			<%= f.text_field :body %>
+		  </p>
+		  
+		  <p>
+			<%= f.submit %>
+		  </p>
+		<% end %>
+
+  
+  
