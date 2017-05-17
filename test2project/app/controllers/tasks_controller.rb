@@ -11,13 +11,16 @@ class TasksController < ApplicationController
 	
   end
   
-  def update
-	@task = Task.find(params[:project_id])
-	if @task.update(task_params)
+	def update
+		@task = Task.find(params[:project_id])
+		if @task.update(edit_task_params)	
+			
 			redirect_to @task.project
 		else
 			render 'edit'
 		end
+		
+		
 	end
   
   def edit
@@ -27,12 +30,23 @@ class TasksController < ApplicationController
  def destroy
 		@task = Task.find(params[:id])
 		@task.destroy
+		redirect_to @task.project
 	end
-  private
+	
+	private
     def task_params
-      params.require(:task).permit(:title, :description)
-	  
+      params.require(:task).permit(:title, :description, :user_id)
     end
+	private
+	def edit_task_params
+      params.require(:task).permit(:title, :description, :status)
+    end
+	
+	def status_task_params
+      params.require(:task).permit(:status)
+    end
+	
 
+	
 
 end

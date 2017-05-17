@@ -28,7 +28,13 @@
     <%= f.label :description %><br>
     <%= f.text_area :description %>
   </p>
- 
+
+  <p>
+    <%= f.label :Status %><br>
+	<%= select_tag(:status, options_for_select([['new', 'new'], ['in progress', 'in progress'], ['done', 'done']]))%>
+  </p>
+
+  
   <p>
     <%= f.submit %>
   </p>

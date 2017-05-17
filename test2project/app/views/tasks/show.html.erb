@@ -8,14 +8,23 @@
   <%= @task.description %>
 </p>
 
+<p>
+  <strong>Status:</strong>
+  <%= @task.status %>
+</p>
+
+
 	<h2>Comments</h2>
 	<% @task.comments.each do |comment| %>
 		<p>
 			<strong>Comment:</strong>
 			<%= comment.body %>
+			<td><%= link_to 'Edit', edit_task_comment_path(comment) %></td>
+			<td><%= link_to 'Destroy', task_comment_path(comment), method: :delete, data:{confirm: 'Are you sure?'} %></td>
 		</p>	
 		  
 	<% end %>
+	
 	<h2>Add a comment:</h2>
 		<%= form_for([@task, @task.comments.build]) do |f| %>
 		  <p>

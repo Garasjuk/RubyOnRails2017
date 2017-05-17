@@ -64,13 +64,12 @@
 			<%= f.text_area :description %>
 		  </p>
 		  
-		  <% @users.each do |user| %>
-			  <p>
-				<strong>Name:</strong>
-				<%= user.last_name %>
-			  </p>
-		  <% end %>
-		  
+		  <p>
+			<strong>Name:</strong>
+			<%= select_tag(:user_id, options_from_collection_for_select(@users, :id, :first_name))%>
+		  </p>
+			
+
 		  <p>
 			<%= f.submit %>
 		  </p>
