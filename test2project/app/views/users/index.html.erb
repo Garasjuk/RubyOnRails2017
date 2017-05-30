@@ -1,16 +1,27 @@
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
 <%= link_to 'My Projects', controller: 'projects' %>
-<%= form_for :user do |f| %>
-  <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
- 
-  <p>
-    <%= f.label :password %><br>
-    <%= f.text_area :password %>
-  </p>
- 
-  <p>
-    <%= f.submit %>
-  </p>
-<% end %>
+
+<h2> List User </h2>
+
+	<table >
+		<tr>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>E-mail</th>
+			<th>Admin</th>
+			<th></th>
+			<th></th>
+		</tr>
+		<% @users.each do |user| %>
+			<tr>
+				<td><%= user.first_name %>&nbsp</td>
+				<td><%= user.last_name %>&nbsp</td>
+				<td><%= user.email %>&nbsp</td>
+				<td><%= user.admin %>&nbsp</td>
+			
+				<td><%= link_to 'Edit', edit_user_path(user) %>&nbsp</td>
+				<td><%= link_to 'Destroy', user_path(user), method: :delete, data:{confirm: 'Are you sure?'} %>&nbsp</td>
+			</tr>	
+		<% end %>
+	</table>	

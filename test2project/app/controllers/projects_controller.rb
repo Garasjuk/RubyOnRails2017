@@ -1,14 +1,10 @@
 class ProjectsController < ApplicationController
 
 	
-	
+ 
 	 
 	def index
-		@projects = Project.all
-	end
-  
-	def login
-		@project = Project.login
+		@project = Project.all
 	end
 
 	def new
@@ -34,10 +30,11 @@ class ProjectsController < ApplicationController
 	end
 	
 	def destroy
+	
 		@project = Project.find(params[:id])
 		@project.destroy
 		
-		redirect_to project_path
+		redirect_to projects_path
 	end
 	
 	def create

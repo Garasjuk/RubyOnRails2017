@@ -1,0 +1,114 @@
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
+<h1>Reports</h1>
+ 
+<%= link_to 'My Projects', controller: 'projects' %>&nbsp
+<%= link_to 'My Reports', controller: 'reports' %>
+
+
+
+
+
+<table border = 0>
+  <tr>
+    <th>Name</th>
+    <th>Summary</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+ <% j=0%>
+ <% count_user=0 %>
+	
+<% @projects.each do |project| %>
+  	<% j+=1%>	
+	<tr>
+		
+		<td><b><%= project.name %></b>&nbsp</td>
+		<td><b><%= project.summary %></b>&nbsp</td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		
+		<td></td>
+		<td><b>User</b></td>
+		<td><b>Count task user</b></td>
+	</tr>	
+		<% count_task=0 %>
+		<% count_new=0 %>
+		<% count_in_progress=0 %>
+		<% count_done=0 %>
+		<% count_user=0 %>
+		
+		<% @users.each do |user| %>
+			<% @tasks.each do |task| %>	
+				<% if user.id == task.user_id and project.id == task.project_id  %>
+					<% count_user+=1%>
+				<% end %>
+			<% end %>
+			<% if count_user != 0%>
+				<tr>
+					<td></td>
+					<td><%= user.first_name %>&nbsp</td>
+					<td><%= count_user %>&nbsp</td>
+					<td></td>
+					<td></td>
+				</tr>
+			<% end %>
+			<% count_user=0 %>
+		<% end %>
+		
+		<% @tasks.each do |task| %>
+		
+			<% if project.id == task.project_id %>
+				<% count_task+=1 %>
+				
+				<% if task.status == "new"%>
+					<% count_new += 1 %>
+				<% end %>
+				<% if task.status == "in progress"%>
+					<% count_in_progress += 1 %>
+				<% end %>
+				<% if task.status == "done"%>
+					<% count_done += 1 %>
+				<% end %>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td><i><%= task.title %></i>&nbsp</td>
+					<td><i><%= task.description %></i>&nbsp</td>
+					<td><i><%= task.status %></i>&nbsp</td>
+				</tr>
+			<% else %>
+			<% end %>
+		<% end %>
+		
+		<tr>
+			<td></td>
+			<td><b>Count Taks</b>&nbsp</td>
+			<td><b>Count New</b>&nbsp</td>
+			<td><b>Count in Progress</b>&nbsp</td>
+			<td><b>Count Done</b>&nbsp</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><%= count_task %>&nbsp</td>
+			<td><%= count_new %>&nbsp</td>
+			<td><%= count_in_progress %>&nbsp</td>
+			<td><%= count_done %>&nbsp</td>
+		</tr>
+		
+		<tr>
+		</tr>		
+ <% end %>
+		<tr>
+		<td></td>
+		<td><%= j %></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		</tr>
+  
+</table>

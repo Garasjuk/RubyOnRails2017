@@ -1,5 +1,7 @@
-<%= link_to 'Back', projects_path %>
-<%= link_to 'Edit', edit_project_path(@project) %> 
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
+<%= link_to 'Back', projects_path %>&nbsp <%= link_to 'My Projects', controller: 'projects' %>
+
 
 <style type="text/css">
 .block1{
@@ -30,50 +32,90 @@
 	<div class="block2">
 		<h2>Tasks</h2>
 		<% @project.tasks.each do |task| %>
-		  <p>
-			<strong>Title:</strong>
-			<%= task.title %>
-		  </p>
-			
-		  <p>
-			<strong>Description:</strong>
-			<%= task.description %>
-		  </p>
-		 
-		 <p>
-			<strong>Status:</strong>
-			<%= task.status %>
-		  </p>
-		  
-		  <td><%= link_to 'Show', [task.project, task]  %></td>
-		  <td><%= link_to 'Edit', edit_project_task_path(task) %></td>
-		  <td><%= link_to 'Destroy', task_path(task), method: :delete, data:{confirm: 'Are you sure?'} %></td>
-		  <hr>
+			<p>
+				<strong>Title:</strong>
+				<%= task.title %>
+			</p>
+				
+			<p>
+				<strong>Description:</strong>
+				<%= task.description %>
+			</p>
+			 
+			<p>
+				<strong>Status:</strong>
+				<%= task.status %>
+			</p>
+			<p>
+				<strong>User:</strong>
+				<% @users.each do |user| %>
+					<% if user.id == task.user_id%>
+						<%= user.first_name %>
+					<% end %>	
+				<% end %>
+			</p>
+			  
+			  <td><%= link_to 'Show', [task.project, task]  %></td>
+				<% if current_user %>
+					<% if current_user.admin == true or current_user.id == task.user_id %>
+						<td><%= link_to 'Edit', edit_project_task_path(task) %></td>
+					<% else %>
+						<td></td>	
+						<td></td>	
+					<% end %>
+
+					<% if current_user.admin == true %>
+						<td><%= link_to 'Destroy', task_path(task), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+					<% else %>
+						<td></td>
+					<% end %>
+					
+				<% end %>	
+			  <hr>
 		<% end %>
 	</div>
-	<div class="block2">
-		<h2>Add a task:</h2>
-		<%= form_for([@project, @project.tasks.build]) do |f| %>
-		  <p>
-			<%= f.label :title %><br>
-			<%= f.text_field :title %>
-			
-		  </p>
-		  <p>
-			<%= f.label :description %><br>
-			<%= f.text_area :description %>
-		  </p>
-		  
-		  <p>
-			<strong>Name:</strong>
-			<%= select_tag(:user_id, options_from_collection_for_select(@users, :id, :first_name))%>
-		  </p>
-			
+	<% if current_user %>
+		<% if current_user.admin == true %>
+					
+			<div class="block2">
+				<h2>Add a task:</h2>
+				<%= form_for([@project, @project.tasks.build]) do |f| %>
+				
+				<% if @project.errors.any? %>
+					<div id="error_explanation">
+					  <h2>
+						<%= pluralize(@project.errors.count, "error") %> prohibited
+						this article from being saved:
+					  </h2>
+					  <ul>
+						<% @project.errors.full_messages.each do |msg| %>
+						  <li><%= msg %></li>
+						<% end %>
+					  </ul>
+					</div>
+				<% end %>
+				  <p>
+					<%= f.label :title %><br>
+					<%= f.text_field :title %>
+					
+				  </p>
+				  <p>
+					<%= f.label :description %><br>
+					<%= f.text_area :description %>
+				  </p>
+				  
+				  <p>
+					<strong>Name:</strong>
+					<%= f.select(:user_id, options_from_collection_for_select(@users, :id, :first_name), include_blank: true)%>
+				  </p>
+					
 
-		  <p>
-			<%= f.submit %>
-		  </p>
-		<% end %>
-	</div>  
+				  <p>
+					<%= f.submit %>
+				  </p>
+				<% end %>
+			</div>
+		<% end %>	
+	<% end %>	
   
 </div>

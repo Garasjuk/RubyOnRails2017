@@ -1,22 +1,47 @@
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
 <h1>Listing Project</h1>
  
-<%= link_to 'My Projects', controller: 'projects' %>
-<%= link_to 'New Project', new_project_path %>
-<%= link_to 'LogIn', controller: 'users' %>
+<%= link_to 'My Projects', controller: 'projects' %>&nbsp
+
+
+<% if current_user %>
+	<% if current_user.admin == true %>
+		<%= link_to 'New Project', new_project_path %>&nbsp
+		<%= link_to 'My Reports', controller: 'reports' %>&nbsp
+		<%= link_to 'Users', controller: users_path %>&nbsp
+		
+	<% end %>	
+<% end %>	
+
+
+ 
 
 <table>
   <tr>
     <th>Name</th>
     <th>Summary</th>
+    <th></th>
+    <th></th>
+    <th></th>
   </tr>
  
-  <% @projects.each do |project| %>
+  <% @project.each do |project| %>
     <tr>
-      <td><%= project.name %></td>
-      <td><%= project.summary %></td>
-      <td><%= link_to 'Show', project_path(project) %></td>
-      <td><%= link_to 'Edit', edit_project_path(project) %></td>
-      <td><%= link_to 'Destroy', project_path(project), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+      <td><%= project.name %>&nbsp</td>
+      <td><%= project.summary %>&nbsp</td>
+	  
+      <td ><%= link_to 'Show', project_path(project) %>&nbsp</td>
+		<% if current_user %>			
+			<% if current_user.admin == true %>
+				<td><%= link_to 'Edit', edit_project_path(project) %> &nbsp</td>
+				
+				<td><%= link_to 'Destroy', project_path(project), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+			<% else %>
+				<td></td>
+				<td></td>
+			<% end %>
+		<% end %>
 	  
     </tr>
   <% end %>

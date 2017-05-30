@@ -1,3 +1,6 @@
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
+<%= link_to 'My Projects', controller: 'projects' %>
 <p>
   <strong>Title:</strong>
   <%= @task.title %>
@@ -19,23 +22,47 @@
 		<p>
 			<strong>Comment:</strong>
 			<%= comment.body %>
-			<td><%= link_to 'Edit', edit_task_comment_path(comment) %></td>
-			<td><%= link_to 'Destroy', task_comment_path(comment), method: :delete, data:{confirm: 'Are you sure?'} %></td>
+			
+			<% if current_user %>			
+				<% if current_user.admin == true or current_user.id == comment.user_id %>
+					<td><%= link_to 'Edit', edit_task_comment_path(comment) %>&nbsp</td>
+					<td><%= link_to 'Destroy', task_comment_path(comment), method: :delete, data:{confirm: 'Are you sure?'} %>&nbsp</td>
+				<% else %>
+					<td></td>
+				<% end %>
+					
+			<% end %>	
 		</p>	
 		  
 	<% end %>
-	
-	<h2>Add a comment:</h2>
-		<%= form_for([@task, @task.comments.build]) do |f| %>
-		  <p>
-			<%= f.label :comment %><br>
-			<%= f.text_field :body %>
-		  </p>
-		  
-		  <p>
-			<%= f.submit %>
-		  </p>
-		<% end %>
-
+	<% if current_user %>
+		<h2>Add a comment:</h2>
+			<%= form_for([@task, @task.comments.build]) do |f| %>
+				<% if @task.errors.any? %>
+					<div id="error_explanation">
+					  <h2>
+						<%= pluralize(@task.errors.count, "error") %> prohibited
+						this article from being saved:
+					  </h2>
+					  <ul>
+						<% @task.errors.full_messages.each do |msg| %>
+						  <li><%= msg %></li>
+						<% end %>
+					  </ul>
+					</div>
+				 <% end %>
+				<p>
+					<%= f.label :comment %><br>
+					<%= f.text_field :body %>
+				</p>
+				<p>
+					<%= f.hidden_field :user_id, :value => current_user.id %>
+				</p>
+				  
+				<p>
+					<%= f.submit %>
+				</p>
+			<% end %>
+	<% end %>
   
   

@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
     
-  
-	
+ 	
   def create
 	@task = Task.find(params[:task_id])
     @comment = @task.comments.create(comment_params)
@@ -33,7 +32,7 @@ class CommentsController < ApplicationController
  
   private
     def comment_params
-	  params.require(:comment).permit(:body)
+	  params.require(:comment).permit(:body, :user_id)
 	  
     end
 

@@ -1,4 +1,5 @@
-
+<link href="/assets/custom.css" media="screen" rel="stylesheet">
+<link href="/assets/bootstrap.css" media="screen" rel="stylesheet">
 
 <h1> Edit Task</h1>
 
@@ -19,20 +20,28 @@
     </div>
   <% end %>
  
-  <p>
-    <%= f.label :title %><br>
-    <%= f.text_field :title %>
-  </p>
+	<p>
+		<%= f.label :title %><br>
+		<%= f.text_field :title %>
+	</p>
  
-  <p>
-    <%= f.label :description %><br>
-    <%= f.text_area :description %>
-  </p>
+	<p>
+		<%= f.label :description %><br>
+		<%= f.text_area :description %>
+	</p>
 
-  <p>
-    <%= f.label :Status %><br>
-	<%= select_tag(:status, options_for_select([['new', 'new'], ['in progress', 'in progress'], ['done', 'done']]))%>
-  </p>
+	<% if current_user %>
+		<% if current_user.admin == true %>
+			<p>
+				User:
+				<%= f.select(:user_id, options_from_collection_for_select(@users, :id, :first_name),  include_blank: true)%>
+			</p>
+		<% end %>
+	<% end %>
+	<p>	
+		Status:
+		<%= f.select(:status, options_for_select([['new', 'new'], ['in progress', 'in progress'], ['done', 'done']]), include_blank: true)%>
+	</p>
 
   
   <p>

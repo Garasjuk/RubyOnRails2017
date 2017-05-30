@@ -8,7 +8,7 @@ class TasksController < ApplicationController
   
   def show
     @task = Task.find(params[:id])
-	
+	@users = User.all
   end
   
 	def update
@@ -25,6 +25,7 @@ class TasksController < ApplicationController
   
   def edit
 	@task = Task.find(params[:project_id])
+	@users = User.all
   end
  
  def destroy
@@ -39,7 +40,7 @@ class TasksController < ApplicationController
     end
 	private
 	def edit_task_params
-      params.require(:task).permit(:title, :description, :status)
+      params.require(:task).permit(:title, :description, :user_id, :status)
     end
 	
 	def status_task_params
